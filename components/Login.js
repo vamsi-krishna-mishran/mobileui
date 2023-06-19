@@ -9,7 +9,7 @@ import
 } from "native-base";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-export default function Example()
+export default function Example({ navigation })
 {
     const [showPassword, setshowPassword] = useState(false);
     const [checking, isChecked] = useState(false);
@@ -32,14 +32,22 @@ export default function Example()
         let res2 = await res.text();
         console.log(res2);
         isChecked(false);
-        Alert.alert('Alert Title', res2, [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-            },
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-        ], { cancelable: true })
+        if (res2 == 'true')
+        {
+            navigation.navigate('Home', { name: mail });
+        }
+        else
+        {
+            Alert.alert('Alert Title', res2, [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ], { cancelable: true })
+        }
+
     }
 
 
