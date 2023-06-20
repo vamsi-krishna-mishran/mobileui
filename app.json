@@ -1,10 +1,13 @@
 {
   "expo": {
-    "name": "mobileui",
+    "name": "ATMS-RGUKT",
     "slug": "mobileui",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/attendance.jpg",
+    "notification": {
+      "icon": "./assets/attendance.jpg"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

@@ -9,15 +9,24 @@ import
 } from "native-base";
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { Entypo } from "@expo/vector-icons";
+import Toast from './Toast'
+
+
 export default function Example({ navigation })
 {
     const [showPassword, setshowPassword] = useState(false);
+    const [forgetpwd, setforget] = useState(false);
     const [checking, isChecked] = useState(false);
     const [mail, setMail] = useState('');
     const [pwd, setpwd] = useState('');
     const toast = useToast();
     const [createhover, ischover] = useState(false);
-    const handlePressIn = () => { }
+    const handlePressIn = () =>
+    {
+        console.log("clicked forgotpassword");
+        setforget(true);
+    }
+    const resetpwd = () => { return "" }
     const handlePressOut = () => { }
     const checkUser = async () =>
     {
@@ -34,22 +43,33 @@ export default function Example({ navigation })
         isChecked(false);
         if (res2 == 'true')
         {
-            navigation.navigate('Home', { name: mail });
+            navigation.navigate('ATRGen', { name: mail });
+            // navigation.reset({
+            //     index: 0, // Set the index of the new screen in the stack
+            //     routes: [
+            //         { name: 'Home', params: { name: 'mail' } }, // Specify the new screen and its parameters
+            //     ],
+            // });
         }
         else
         {
-            Alert.alert('Alert Title', res2, [
+            toast.closeAll();
+            toast.show({
+                // placement: 'top-right',
+                render: () =>
                 {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-            ], { cancelable: true })
+                    return <Box bg="red.500" px="4" py="2" mr="2" rounded="sm" mb={5}>
+                        <HStack space={2} alignItems="center">
+                            <Ionicons color="#ffffff" name="information-circle-outline" size={22}></Ionicons>
+                            <Text style={{ color: "#ffffff", fontWeight: "bold" }}>Invalid Credentials</Text>
+                        </HStack>
+                    </Box>;
+                }
+            })
         }
 
     }
-
+    const [register, setregister] = useState(false);
 
     return <Box flex="1" safeAreaTop>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -60,8 +80,8 @@ export default function Example({ navigation })
                     <Text style={styles.header}>Analinear</Text>
                 </View>
                 <View style={styles.bottom}>
-                    <Text style={{ fontSize: 34, color: "#4632A1" }}>Welcome</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
+                    {register ? "" : <Text style={{ fontSize: 34, color: "#4632A1" }}>Welcome </Text>}
+                    {register ? "" : <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                         <Text style={{ color: "#A1A0A0" }}>Don't have an account?</Text>
                         <Text style={{ color: "red", fontStyle: 'italic' }}>
                             <Link _text={{
@@ -69,31 +89,20 @@ export default function Example({ navigation })
                                 fontSize: "md",
                                 fontWeight: "500",
                                 color: "red.800",
-                            }} onPress={() =>
-                            {
-                                toast.show({
-                                    render: () =>
-                                    {
-                                        return <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
-                                            Hello! Have a nice day
-                                        </Box>;
-                                    }
-                                })
                             }}
                             >
                                 create new
                             </Link>
                         </Text>
-                    </View>
-
-                    <FormControl pt="5">
+                    </View>}
+                    <FormControl pt="5" isRequired>
                         <FormControl.Label>Email ID</FormControl.Label>
-                        <Input value={mail} onChangeText={(e) => setMail(e)} style={styles.input} />
+                        <Input onFocus={() => toast.closeAll()} value={mail} onChangeText={(e) => setMail(e)} style={styles.input} />
                     </FormControl>
-                    <FormControl>
+                    {forgetpwd ? "" : <FormControl isRequired>
                         <FormControl.Label>Password</FormControl.Label>
                         <HStack>
-                            <Input w='100%' value={pwd} onChangeText={e => setpwd(e)} style={styles.input} type={showPassword ? "text" : "password"} />
+                            <Input onFocus={() => toast.closeAll()} w='100%' value={pwd} onChangeText={e => setpwd(e)} style={styles.input} type={showPassword ? "text" : "password"} />
                             {/* <TextInput
                             style={styles.input}
                             secureTextEntry={!showPassword}
@@ -111,7 +120,7 @@ export default function Example({ navigation })
                             </TouchableOpacity>
                         </HStack>
 
-                        <Link href="https://www.google.com"
+                        <Link
                             onPressIn={handlePressIn}
                             onPressOut={handlePressOut}
                             _text={{
@@ -124,18 +133,35 @@ export default function Example({ navigation })
                             }}>
                             Forget Password?
                         </Link>
-                    </FormControl>
-                    <Button onPress={checkUser} mt="2" colorScheme="indigo">
+                    </FormControl>}
+                    <Button onPress={forgetpwd ? resetpwd : checkUser} mt="2" colorScheme="indigo" isDisabled={checking ? true : false}
+                        isLoading={checking ? true : false} spinnerPlacement="end" isLoadingText={forgetpwd ? "resetting " : "logging in"}
+                        _loading={{ _text: { color: 'white', fontWeight: 'bold', fontSize: 18 } }}
+                    >
                         <HStack >
-                            <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold' }}>{checking ? "" : 'sign in'}</Text>{checking ? <Spinner color="white" size="sm" /> : ""}
+                            <Text style={{ color: "white", fontSize: 20, fontWeight: 'bold' }} >{forgetpwd ? "reset password" : 'sign in'}</Text>
                         </HStack>
                     </Button>
+                    {forgetpwd ? <Navigate setforget={setforget} /> : ""}
 
                 </View>
             </Flex>
         </ScrollView>
     </Box >;
 }
+
+function Navigate({ setforget })
+{
+    return <Box pt={4}>
+        <TouchableOpacity onPress={() => setforget(false)}>
+            <HStack alignItems={"center"}>
+                <Ionicons size={25} name="chevron-back-outline"></Ionicons>
+                <Text >Back to Login</Text>
+            </HStack>
+        </TouchableOpacity>
+    </Box>
+}
+
 
 const styles = StyleSheet.create({
     input: {
@@ -145,7 +171,7 @@ const styles = StyleSheet.create({
     top: {
         flex: 1,
         paddingTop: 100,
-        backgroundColor: "rgba(0,0,225,0.7)",
+        backgroundColor: "rgba(0,0,225,0.6)",
         height: 400,
         alignItems: 'center',
 
