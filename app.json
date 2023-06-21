@@ -4,9 +4,9 @@
     "slug": "mobileui",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/attendance.jpg",
+    "icon": "./assets/attendance2.jpg",
     "notification": {
-      "icon": "./assets/attendance.jpg"
+      "icon": "./assets/attendance2.jpg"
     },
     "splash": {
       "image": "./assets/splash.png",

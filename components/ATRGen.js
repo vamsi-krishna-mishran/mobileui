@@ -2,6 +2,7 @@
 import { useRoute } from '@react-navigation/native';
 
 import * as React from "react";
+import { useState } from 'react';
 import
 {
     createDrawerNavigator,
@@ -11,7 +12,8 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import
 {
     NativeBaseProvider,
-    Button, Menu,
+
+    Menu,
     Box,
     HamburgerIcon,
     Pressable,
@@ -22,21 +24,110 @@ import
     HStack,
     Divider,
     Icon,
+    ScrollView,
+    TextArea,
+    Header
 } from "native-base";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SearchBar from './Searchbar';
+import AddBoard from './AddBoard';
 global.__reanimatedWorkletInit = () => { };
 const Drawer = createDrawerNavigator();
-function Component(props)
+import { View } from 'react-native'
+import { HelperText, TextInput, Dropdown } from 'react-native-paper';
+import Dropdowncom from './Dropdown'
+import { Button } from 'react-native-paper';
+
+
+function Form()
+{
+    const [did, setdid] = React.useState("");
+    const [pid, setpid] = useState("");
+    const [vid, setvid] = useState("");
+    const [err, setErr] = useState([]);
+    const [rname, setrname] = React.useState("");
+    const [cid, setcid] = React.useState("");
+    const [sid, setsid] = React.useState("");
+    const [selected, setSelected] = useState([]);
+    const [remark, setremark] = useState("");
+    const generateReport = () =>
+    {
+
+
+    }
+
+    return (
+        <VStack>
+            <HStack justifyContent="center">
+
+                <Text style={{ fontWeight: "bold", fontSize: 25, padding: 10, marginTop: 10 }}>ATR</Text>
+
+            </HStack>
+            <HStack mx={2} width={400} >
+                <Dropdowncom singleselect={true} setid={setpid} />
+                <Dropdowncom singleselect={true} setid={setvid} />
+            </HStack>
+            <HStack width={400} space={8} mx={5} my={2}>
+                <TextInput style={{ width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
+                    label="Document Id*"
+                    outlineColor='rgba(0,0,255,0.3)'
+                    activeOutlineColor='rgba(0,0,255,0.4)'
+                    // mode="outlined"
+                    value={did}
+                    onChangeText={text => setdid(text)}
+                />
+                <TextInput style={{ width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
+                    label="Report Name*"
+                    outlineColor='rgba(0,0,255,0.3)'
+                    activeOutlineColor='rgba(0,0,255,0.4)'
+                    //mode="outlined"
+                    value={rname}
+                    onChangeText={text => setrname(text)}
+                />
+            </HStack>
+            <HStack width={400} space={8} mx={5} my={2}>
+                <TextInput style={{ textAlign: "left", width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
+                    label="Camera Id*"
+                    outlineColor='rgba(0,0,255,0.3)'
+                    activeOutlineColor='rgba(0,0,255,0.4)'
+                    // mode="outlined"
+                    value={cid}
+                    onChangeText={text => setcid(text)}
+                />
+                <TextInput style={{ width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
+                    label="Sensor Id*"
+                    outlineColor='rgba(0,0,255,0.3)'
+                    activeOutlineColor='rgba(0,0,255,0.4)'
+                    //mode="outlined"
+                    value={sid}
+                    onChangeText={text => setsid(text)}
+                />
+            </HStack>
+            <HStack mx={2} width={400} >
+                <Dropdowncom singleselect={false} selected={selected} setSelected={setSelected} />
+            </HStack>
+            <View style={{ flex: 1, justifyContent: "center", alignItems: 'center' }}>
+                {/* <HStack justifyContent="center" width={400}> */}
+                <TextArea onChangeText={(e) => setremark(e)} borderColor="rgba(0,0,0,0.5)" backgroundColor="transparent" focusOutlineColor="black" h={20} placeholder="Enter Remarks *" value={remark} width={300} />
+                {/* </HStack> */}
+            </View>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+                <Button icon="pen" mode="outlined" onPress={generateReport} style={{ marginVertical: 20, width: 120, borderColor: "rgba(0,0,255,0.4)" }} > Generate</Button>
+
+            </View>
+        </VStack >
+    );
+}
+
+
+function ATRComponent(props)
 {
     return (
         <>
             <SearchBar />
-            <Center bgColor={"rgba(0,0,255,0.1)"} flex={1}>
-                <Text mt="12" fontSize="18">
-                    This is {props.route.name} page.
-                </Text>
-            </Center>
+            <ScrollView bgColor={"rgba(0,0,255,0.1)"} flex={1}>
+                <Form />
+            </ScrollView>
         </>
 
     );
@@ -57,7 +148,6 @@ const getIcon = (screenName) =>
 
 function CustomDrawerContent(props)
 {
-    console.log(props.state.routeNames);
     return (
         <DrawerContentScrollView {...props} safeArea>
             <VStack space="6" my="2" mx="1">
@@ -139,8 +229,8 @@ function MyDrawer({ username, logout })
                 drawerContent={(props) => <CustomDrawerContent {...props} username={username}
                 />}
             >
-                <Drawer.Screen name="AddBoard" component={Component} />
-                <Drawer.Screen name="Create Report" component={Component} />
+                <Drawer.Screen name="AddBoard" component={AddBoard} />
+                <Drawer.Screen name="Create Report" component={ATRComponent} />
             </Drawer.Navigator>
         </Box>
     );
