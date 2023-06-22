@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, useTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './components/Login'

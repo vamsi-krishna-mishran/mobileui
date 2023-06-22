@@ -4,6 +4,7 @@ import { MultiSelect, Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 
+
 const data = [
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
@@ -15,7 +16,7 @@ const data = [
     { label: 'Item 8', value: '8' },
 ];
 
-const MultiSelectComponent = ({ singleselect, selected, setSelected, setid }) =>
+const MultiSelectComponent = ({ singleselect = true, selected, setSelected, setid }) =>
 {
 
     if (singleselect)
@@ -97,7 +98,7 @@ const MultiSelectComponent = ({ singleselect, selected, setSelected, setid }) =>
 export default MultiSelectComponent;
 
 const styles = StyleSheet.create({
-    container: { padding: 16, },
+    container: { padding: 16 },
     dropdown: {
         width: 140,
         height: 40,

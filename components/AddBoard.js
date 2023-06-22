@@ -9,11 +9,11 @@ import EnvironmentalTest from './EnvironmentalTest'
 import FunctionalTest from './FunctionalTest'
 import EOTest from './EOTest'
 import CameraPicture from './CameraPicture'
+import { KeyboardAvoidingView } from 'native-base';
 
 function AddBoard()
 {
     const data = [{ id: 1, name: "Product" },
-    { id: 2, name: "Board" },
     { id: 3, name: "Bare Board Inspection" },
     { id: 4, name: "Assembled Board Inspection" },
     { id: 5, name: "PowerUp Test" },
@@ -29,6 +29,7 @@ function AddBoard()
 
     }
     return (
+        // <KeyboardAvoidingView>
         <View style={{ backgroundColor: 'rgba(0,0,255,0.1)', flex: 1 }}>
             <View>
                 <FlatList backgroundColor="#f0f0f0" py={2} horizontal data={data} renderItem={({
@@ -37,6 +38,7 @@ function AddBoard()
                 {getcomponent(current)}
             </View>
         </View>
+        // </KeyboardAvoidingView>
     )
 }
 

@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
+import { Button } from 'react-native-paper'
+import { PermissionStatus } from 'expo-image-picker';
 
 
-function AddImage()
+function AddImage({ setImage, edit })
 {
     const [hasPermission, setPermission] = useState(false);
-
     useEffect(() =>
     {
         (async () =>
         {
             const status = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            setPermission(status === "granted");
+            setPermission(status === PermissionStatus.GRANTED);
         })()
     }, [])
     const pickImageAsync = async () =>
@@ -21,19 +22,22 @@ function AddImage()
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             quality: 1,
+            base64: true
         });
+
 
         if (!result.canceled)
         {
-            console.log(result);
+            setImage(result.assets[0].base64);
+
         } else
         {
             alert('You did not select any image.');
         }
     };
     return (
-        <View>
-            <Button onPress={pickImageAsync}>Select Image</Button>
+        <View style={{ alignItems: 'center' }}>
+            <Button mode="contained" icon="folder" style={{ width: 150, margin: 5 }} onPress={pickImageAsync} disabled={edit}>Select Image</Button>
         </View>
     )
 }
