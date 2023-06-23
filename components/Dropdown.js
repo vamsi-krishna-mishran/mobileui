@@ -16,13 +16,13 @@ const data = [
     { label: 'Item 8', value: '8' },
 ];
 
-const MultiSelectComponent = ({ singleselect = true, selected, setSelected, setid }) =>
+const MultiSelectComponent = ({ edit=false,singleselect = true, selected, setSelected, setid }) =>
 {
 
     if (singleselect)
     {
         return <View style={styles.container}>
-            <Dropdown
+            <Dropdown disable={edit}
                 containerStyle={{ backgroundColor: "#E8E4E4", color: "#f0f0f0" }}
                 maxHeight={250}
                 style={styles.dropdown}
@@ -55,7 +55,7 @@ const MultiSelectComponent = ({ singleselect = true, selected, setSelected, seti
     }
     return (
         <View style={styles.container}>
-            <MultiSelect
+            <MultiSelect disable={edit}
                 containerStyle={{ backgroundColor: "#E8E4E4" }}
                 maxHeight={250}
                 style={{

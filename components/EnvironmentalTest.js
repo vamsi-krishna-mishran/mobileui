@@ -36,7 +36,7 @@ function EnvironmentalTest()
                 else
                 {
                     setDesc("");
-
+                    setData(["","",""])
                     setloading(false);
 
                 }
