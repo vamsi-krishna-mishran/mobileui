@@ -69,7 +69,8 @@ function Form()
             </HStack>
             <HStack width={400} space={8} mx={5} my={2}>
                 <TextInput style={{ width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
-                    label="Document Id*"
+                    placeholder="Document Id*"
+                    placeholderTextColor="rgba(0,0,255,0.5)"
                     outlineColor='rgba(0,0,255,0.3)'
                     activeOutlineColor='rgba(0,0,255,0.4)'
                     // mode="outlined"
@@ -77,8 +78,9 @@ function Form()
                     onChangeText={text => setdid(text)}
                 />
                 <TextInput style={{ width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
-                    label="Report Name*"
-                    outlineColor='rgba(0,0,255,0.3)'
+                    placeholder="Report Name*"
+                    placeholderTextColor="rgba(0,0,255,0.5)"
+                    outlineColor='rgba(0,0,255,0.8)'
                     activeOutlineColor='rgba(0,0,255,0.4)'
                     //mode="outlined"
                     value={rname}
@@ -87,7 +89,8 @@ function Form()
             </HStack>
             <HStack width={400} space={8} mx={5} my={2}>
                 <TextInput style={{ textAlign: "left", width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
-                    label="Camera Id*"
+                    placeholder="Camera Id*"
+                    placeholderTextColor="rgba(0,0,255,0.5)"
                     outlineColor='rgba(0,0,255,0.3)'
                     activeOutlineColor='rgba(0,0,255,0.4)'
                     // mode="outlined"
@@ -95,7 +98,8 @@ function Form()
                     onChangeText={text => setcid(text)}
                 />
                 <TextInput style={{ width: 140, backgroundColor: "transparent", fontSize: 12, borderBottomColor: "#0000ff" }}
-                    label="Sensor Id*"
+                    placeholder="Sensor Id*"
+                    placeholderTextColor="rgba(0,0,255,0.5)"
                     outlineColor='rgba(0,0,255,0.3)'
                     activeOutlineColor='rgba(0,0,255,0.4)'
                     //mode="outlined"
@@ -238,7 +242,8 @@ function MyDrawer({ username, logout })
 export default function Example({ navigation })
 {
     const route = useRoute();
-    const { name } = route.params;
+    //const { name } = route.params;
+    const name = "vamsi"
     const logout = () =>
     {
         navigation.reset({

@@ -44,7 +44,7 @@ const MultiSelectComponent = ({ singleselect = true, selected, setSelected, seti
                 renderLeftIcon={() => (
                     <AntDesign
                         style={styles.icon}
-                        color="black"
+                        color="rgba(0,0,255,0.5)"
                         name="Safety"
                         size={20}
                     />
@@ -84,9 +84,10 @@ const MultiSelectComponent = ({ singleselect = true, selected, setSelected, seti
                 renderLeftIcon={() => (
                     <AntDesign
                         style={styles.icon}
-                        color="black"
+                        color="rgba(0,0,255,0.5)"
                         name="Safety"
                         size={20}
+
                     />
                 )}
                 selectedStyle={styles.selectedStyle}
@@ -108,12 +109,13 @@ const styles = StyleSheet.create({
     },
     placeholderStyle: {
         fontSize: 12,
-        color: "rgba(9,9,9,0.8)",
-
+        fontWeight: "bold",
+        color: "rgba(0,0,255,0.5)",
     },
     selectedTextStyle: {
         fontSize: 12,
-        color: "rgba(9,9,9,0.4)"
+        fontWeight: "bold",
+        color: "rgba(0,0,255,0.5)"
     },
     iconStyle: {
         width: 20,

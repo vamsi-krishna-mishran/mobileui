@@ -12,7 +12,7 @@ function SnackbarT({ data, visible, setVisibile })
         <View style={styles.container}>
             <Portal>
                 <Snackbar
-                    duration={2000}
+                    duration={10000}
                     style={{ backgroundColor: data.state ? "green" : "red", marginBottom: 30, borderRadius: 10 }}
                     elevation={7}
                     visible={visible}
@@ -22,7 +22,6 @@ function SnackbarT({ data, visible, setVisibile })
                         onPress: () => { setVisibile(false) }
                     }}
                 >
-
                     <Text style={{ color: "white", fontWeight: "bold" }}>{data.data}</Text>
 
                 </Snackbar>

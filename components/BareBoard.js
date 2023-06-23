@@ -50,7 +50,7 @@ function BareBoard()
             body: JSON.stringify({ ImageName: "image temp from native", "Description": desc, "ImageData": image, IId: 1 })
 
         });
-        if (res.ok)
+        if (res.status === 200)
         {
 
             setErr(prev => ({ ...prev, data: "datails uploaded successfully.", state: true }))
@@ -60,7 +60,6 @@ function BareBoard()
         {
             setErr(prev => ({ ...prev, data: "uploading operation failed", state: false }))
             setSnack(true);
-            console.log(res.status);
         }
     }
 
@@ -74,11 +73,11 @@ function BareBoard()
                 // {
                 //     setTimeout(() => resolve(), 10000)
                 // })
-                let res = await fetch('https://webapifluent20230616160256.azurewebsites.net/api/BareBoard?All=false&Id=3');
-                if (res.ok)
+                let res = await fetch('https://webapifluent20230616160256.azurewebsites.net/api/BareBoard?IBoardType=Bareboard&Id=1');
+                if (res.status === 200)
                 {
                     let res2 = await res.json();
-                    console.log(res2);
+
                     setDesc(res2.description);
                     setImage(res2.imageData);
                     setloading(false);
@@ -88,6 +87,7 @@ function BareBoard()
                     setDesc("");
                     setImage(false);
                     setloading(false);
+
                 }
             }
         )();
