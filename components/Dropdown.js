@@ -5,18 +5,18 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 
 
-const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-];
+// const data = [
+//     { label: 'Item 1', value: '1' },
+//     { label: 'Item 2', value: '2' },
+//     { label: 'Item 3', value: '3' },
+//     { label: 'Item 4', value: '4' },
+//     { label: 'Item 5', value: '5' },
+//     { label: 'Item 6', value: '6' },
+//     { label: 'Item 7', value: '7' },
+//     { label: 'Item 8', value: '8' },
+// ];
 
-const MultiSelectComponent = ({ edit=false,singleselect = true, selected, setSelected, setid }) =>
+const MultiSelectComponent = ({ data,edit=false,singleselect = true, selected, setSelected, setid }) =>
 {
 
     if (singleselect)
@@ -39,7 +39,7 @@ const MultiSelectComponent = ({ edit=false,singleselect = true, selected, setSel
                 value={selected}
                 onChange={item =>
                 {
-                    setid(item);
+                    setid(item.id);
                 }}
                 renderLeftIcon={() => (
                     <AntDesign

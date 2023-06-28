@@ -1,19 +1,20 @@
-module.exports = function (api)
-{
+module.exports = function (api) {
   api.cache(true);
   return {
     env: {
       production: {
-        plugins: ['react-native-paper/babel'],
+        plugins: ["react-native-paper/babel"],
       },
     },
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
       [
-        'react-native-reanimated/plugin', {
+        "react-native-reanimated/plugin",
+        {
           relativeSourceLocation: true,
         },
       ],
+      ["module:react-native-dotenv"],
       // [
       //   "expo-image-picker",
       //   {
@@ -23,7 +24,6 @@ module.exports = function (api)
     ],
   };
 };
-
 
 // module.exports = function (api)
 // {
