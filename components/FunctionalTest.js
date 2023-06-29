@@ -79,13 +79,22 @@ function FunctionalTest() {
   const AddHeading = async (data) => {
     try{
       setErr((prev) => ({ ...prev, data: "uploading details...", state: true }));
+     // alert(hid)
     setSnack(true);
     const url=type==1?"/api/Heading":"/api/SubHeading";
     const key=type==1?"IId":"HId"
     const value=type==1?1:hid;
-    alert(hid);
-    let res = await UploadType( `${API_URL}${url}`,"POST",{Name:data,HId:3,Remark:"temp",Description:"temp"})
+    //alert(hid);
+    let res = await UploadType( `${API_URL}${url}`,"POST",{Name:data,[key]:value,Remark:"temp",Description:"temp"})
     if (res) {
+      if(type==1)
+      {
+        setHeadings(prev=>{let s=[...prev];s.push({name:data,id:res});return s;})
+      }
+      else if(type==2)
+      {
+        setsubHeadings(prev=>{let s=[...prev];s.push({name:data,id:res});return s;})
+      }
       setErr((prev) => ({
         ...prev,
         data: "uploaded successfully.",
@@ -152,63 +161,197 @@ function FunctionalTest() {
       setShowModal(true);
     }
   };
+  const loadHeadings=async(id)=>{
+    try{
+      setloading(prev=>({...prev,head:true}));
+      // await new Promise((resolve, reject) =>
+      // {
+      //     setTimeout(() => resolve(), 10000)
+      // })
+      let res = await fetch(`${API_URL}/api/Heading?Id=1`);
+      let res2=null;
+      if (res.status === 200) {
+       // console.log(res);
+        res2 = await res.json();
+        //alert(res2.length);
+        // headings.length=0;
+        //res2.forEach(el=>headings.push(el));
+        setHeadings(prev => [...res2]);
+        // alert(headings.length);
+        setHid(prev=>res2[0].id);
+        setDesc(prev=>{let s=[...prev];s[0]=res2[0].description;return s;})
+        setRemark(prev=>{let s=[...prev];s[0]=res2[0].remark;return s;})
+        setloading(prev=>({...prev,head:false}));
+        return res2[0].id;
+        //alert(headings[0].id)
+      } else {
+        //setloading(prev=>({...prev,head:false}));
+        setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
+        return false;
+      }
+    }
+    catch(err){
+      setErr((prev) => ({
+          ...prev,
+          data: err.message,
+          state: false,
+        }));
+        setSnack(true);
+        setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
+        return false;
+    }
+  }
+  const loadSHeadings=async(id)=>{
+    try{
+      setloading(prev=>({...prev,subhead:true,upimgs:true,upsheets:true}));
+      const res = await fetch(`${API_URL}/api/SubHeading?Id=${id}`);
+      if (res.status === 200) {
+        let res3 = await res.json();
+       // setsubHeadings(prev=>[...res3]);
+        //subheadings.length=0;
+      // res3.forEach(el=>subheadings.push(el));
+         setsubHeadings(prev => [...res3]);
+       // console.log(res3);
+         setSHid(prev=>res3[0].id);
+         setDesc(prev=>{let s=[...prev];s[1]=res3[0].description;return s;})
+         setRemark(prev=>{let s=[...prev];s[1]=res3[0].remark;return s;})
+         setloading(prev=>({...prev,subhead:false}));
+         fetchImageSheets("SubHeadingImages");
+         fetchImageSheets("XLSheets/GetTemplates");
+         return res3[0].id;
+      } else {
+        //setloading(prev=>({...prev,subhead:false}));
+        setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
+        return false;
+      }
+    }
+    catch(err){
+      setErr((prev) => ({
+          ...prev,
+          data: err.message,
+          state: false,
+        }));
+        setSnack(true);
+        setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
+        return false;
+    }
+  }
+  
+  
+  const fetchImageSheets=async(endpoint)=>{
+    try{
+      if(endpoint=="SubHeadingImages"){
+        setloading(prev=>({...prev,upimgs:true}))
 
+      }
+      else
+      {
+        setloading(prev=>({...prev,upsheets:true}))
+      }
+      //alert(shid);
+    let res = await fetch(`${API_URL}/api/${endpoint}?Id=${shid}`);
+    if (res.status === 200) {
+      let res2 = await res.json();
+      if(endpoint=="SubHeadingImages"){
+        console.log(res2);
+        setPresentImages(prev=>(res2));
+        setloading(prev=>({...prev,upimgs:false}))
+      }
+      else
+      {
+      setPresentedSheets(prev=>(res2));
+      setloading(prev=>({...prev,upsheets:false}))
+      }
+    }
+    else{
+      if(endpoint=="SubHeadingImages")
+      {
+        setloading(prev=>({...prev,upimgs:false}))
+
+      }
+      else{
+      setloading(prev=>({...prev,upsheets:false}))
+
+      }
+    } 
+  }
+  catch(err){
+    setErr((prev) => ({
+        ...prev,
+        data: err.message,
+        state: false,
+      }));
+      setSnack(true);
+      setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
+  }
+}
   useEffect(() => {
     (async () => {
       try{
-          setloading(prev=>({...prev,head:true}));
-        // await new Promise((resolve, reject) =>
-        // {
-        //     setTimeout(() => resolve(), 10000)
-        // })
-        let res = await fetch(`${API_URL}/api/Heading?Id=1`);
-        let res2=null;
-        if (res.status === 200) {
-         // console.log(res);
-          res2 = await res.json();
-          //alert(res2.length);
-          // headings.length=0;
-          //res2.forEach(el=>headings.push(el));
-          setHeadings(prev => [...res2]);
-          // alert(headings.length);
-          setHid(prev=>res2[0].id);
-          setDesc(prev=>{let s=[...prev];s[0]=res2[0].description;return s;})
-          setRemark(prev=>{let s=[...prev];s[0]=res2[0].remark;return s;})
-          setloading(prev=>({...prev,head:false}));
-          //alert(headings[0].id)
-        } else {
-          //setloading(prev=>({...prev,head:false}));
-          setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
-          return;
+        //   setloading(prev=>({...prev,head:true}));
+        // // await new Promise((resolve, reject) =>
+        // // {
+        // //     setTimeout(() => resolve(), 10000)
+        // // })
+        // let res = await fetch(`${API_URL}/api/Heading?Id=1`);
+        // let res2=null;
+        // if (res.status === 200) {
+        //  // console.log(res);
+        //   res2 = await res.json();
+        //   //alert(res2.length);
+        //   // headings.length=0;
+        //   //res2.forEach(el=>headings.push(el));
+        //   setHeadings(prev => [...res2]);
+        //   // alert(headings.length);
+        //   setHid(prev=>res2[0].id);
+        //   setDesc(prev=>{let s=[...prev];s[0]=res2[0].description;return s;})
+        //   setRemark(prev=>{let s=[...prev];s[0]=res2[0].remark;return s;})
+        //   setloading(prev=>({...prev,head:false}));
+        //   //alert(headings[0].id)
+        // } else {
+        //   //setloading(prev=>({...prev,head:false}));
+        //   setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
+        //   return;
+        // }
+        let res=await loadHeadings();
+        if(res)
+        {
+          res=await loadSHeadings(res);
+          if(res)
+          {
+            fetchImageSheets("SubHeadingImages");
+            fetchImageSheets("XLSheets/GetTemplates");
+          }
         }
-        res = await fetch(`${API_URL}/api/SubHeading?Id=${res2[0].id}`);
-        if (res.status === 200) {
-          let res3 = await res.json();
-         // setsubHeadings(prev=>[...res3]);
-          //subheadings.length=0;
-        // res3.forEach(el=>subheadings.push(el));
-           setsubHeadings(prev => [...res3]);
-         // console.log(res3);
-           setSHid(prev=>res3[0].id);
-           setDesc(prev=>{let s=[...prev];s[1]=res3[0].description;return s;})
-           setRemark(prev=>{let s=[...prev];s[1]=res3[0].remark;return s;})
-           setloading(prev=>({...prev,subhead:false}));
-        } else {
-          //setloading(prev=>({...prev,subhead:false}));
-          setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
-        }
-        (async()=>{
-          await fetchImageSheets("SubHeadingImages");
-          console.log("fetched images");
-          console.log(presentImages)
-          setloading(prev=>({...prev,upimgs:false}))
-        })();
-        (async()=>{
-          await fetchImageSheets("XLSheet/GetTemplates");
-          console.log("fetched sheets");
-          console.log(presentedSheets);
-          setloading(prev=>({...prev,upsheets:false}))
-        })();
+        //res = await fetch(`${API_URL}/api/SubHeading?Id=${res2[0].id}`);
+        // if (res.status === 200) {
+        //   let res3 = await res.json();
+        //  // setsubHeadings(prev=>[...res3]);
+        //   //subheadings.length=0;
+        // // res3.forEach(el=>subheadings.push(el));
+        //    setsubHeadings(prev => [...res3]);
+        //  // console.log(res3);
+        //    setSHid(prev=>res3[0].id);
+        //    setDesc(prev=>{let s=[...prev];s[1]=res3[0].description;return s;})
+        //    setRemark(prev=>{let s=[...prev];s[1]=res3[0].remark;return s;})
+        //    setloading(prev=>({...prev,subhead:false}));
+        // } else {
+        //   //setloading(prev=>({...prev,subhead:false}));
+        //   setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
+        // }
+        
+        // (async()=>{
+        //   await fetchImageSheets("SubHeadingImages");
+        //   console.log("fetched images");
+        //   console.log(presentImages)
+        //   setloading(prev=>({...prev,upimgs:false}))
+        // })();
+        // (async()=>{
+        //   await fetchImageSheets("XLSheet/GetTemplates");
+        //   console.log("fetched sheets");
+        //   console.log(presentedSheets);
+        //   setloading(prev=>({...prev,upsheets:false}))
+        // })();
       }
       catch(err){
         setErr((prev) => ({
@@ -222,27 +365,7 @@ function FunctionalTest() {
     })();
   }, []);
 
-  const fetchImageSheets=async(endpoint)=>{
-      try{
-      let res = await fetch(`${API_URL}/api/${endpoint}?Id=1`);
-      if (res.status === 200) {
-        let res2 = await res.json();
-        if(endpoint=="SubHeadingImages")
-        setPresentImages(prev=>(res2));
-        else
-        setPresentedSheets(prev=>(res2));
-      } 
-    }
-    catch(err){
-      setErr((prev) => ({
-          ...prev,
-          data: err.message,
-          state: false,
-        }));
-        setSnack(true);
-        setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
-    }
-  }
+  
   const uploadType=async (type,base64,name)=>{
     try{
       if(type==="img")
@@ -258,7 +381,7 @@ function FunctionalTest() {
       const res = await UploadType(`${API_URL}/api/SubHeadingImages`,"POST",{
         Name:name,
         ImageData:base64,
-        SHId:1
+        SHId:shid
       });
       if(res)
       {
@@ -336,18 +459,19 @@ function FunctionalTest() {
       </HStack>
       <HStack mt={-4}>
         {loading.head?<HSubSkeleton/>:
-        <MultiSelectComponent
+        <MultiSelectComponent loadNext={loadSHeadings}
           data={headings.map(el=>({label:el.name,value:el.id}))}
           edit={edit}
           selected={hid}
-          setSelected={() => {}}
+          setSelected={setHid}
           setid={setHid}
         />}
         {loading.subhead?<HSubSkeleton/>:<MultiSelectComponent
+          loadNext={()=>{fetchImageSheets("SubHeadingImages")}}
           data={subheadings.map(el=>({label:el.name,value:el.id}))}
           edit={edit}
           selected={shid}
-          setSelected={() => {}}
+          setSelected={setSHid}
           setid={setSHid}
         />}
       </HStack>

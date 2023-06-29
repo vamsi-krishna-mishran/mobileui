@@ -16,7 +16,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 //     { label: 'Item 8', value: '8' },
 // ];
 
-const MultiSelectComponent = ({ data,edit=false,singleselect = true, selected, setSelected, setid }) =>
+const MultiSelectComponent = ({ loadNext,data,edit=false,singleselect = true, selected, setSelected, setid }) =>
 {
 
     if (singleselect)
@@ -39,7 +39,9 @@ const MultiSelectComponent = ({ data,edit=false,singleselect = true, selected, s
                 value={selected}
                 onChange={item =>
                 {
-                    setid(item.id);
+                    alert(item.value);
+                    setid(item.value);
+                    loadNext(item.value);
                 }}
                 renderLeftIcon={() => (
                     <AntDesign
