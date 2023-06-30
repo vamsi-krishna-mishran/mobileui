@@ -216,8 +216,9 @@ function FunctionalTest() {
          setDesc(prev=>{let s=[...prev];s[1]=res3[0].description;return s;})
          setRemark(prev=>{let s=[...prev];s[1]=res3[0].remark;return s;})
          setloading(prev=>({...prev,subhead:false}));
-         fetchImageSheets("SubHeadingImages");
-         fetchImageSheets("XLSheets/GetTemplates");
+        // alert(res3[0].id)
+         fetchImageSheets("SubHeadingImages",res3[0].id);
+         fetchImageSheets("XLSheets/GetTemplates",res3[0].id);
          return res3[0].id;
       } else {
         //setloading(prev=>({...prev,subhead:false}));
@@ -238,7 +239,7 @@ function FunctionalTest() {
   }
   
   
-  const fetchImageSheets=async(endpoint)=>{
+  const fetchImageSheets=async(endpoint,shiid)=>{
     try{
       if(endpoint=="SubHeadingImages"){
         setloading(prev=>({...prev,upimgs:true}))
@@ -249,7 +250,8 @@ function FunctionalTest() {
         setloading(prev=>({...prev,upsheets:true}))
       }
       //alert(shid);
-    let res = await fetch(`${API_URL}/api/${endpoint}?Id=${shid}`);
+    //  alert(`${API_URL}/api/${endpoint}?Id=${shid}`);
+    let res = await fetch(`${API_URL}/api/${endpoint}?Id=${shiid}`);
     if (res.status === 200) {
       let res2 = await res.json();
       if(endpoint=="SubHeadingImages"){
@@ -270,7 +272,7 @@ function FunctionalTest() {
 
       }
       else{
-      setloading(prev=>({...prev,upsheets:false}))
+        setloading(prev=>({...prev,upsheets:false}))
 
       }
     } 
@@ -288,31 +290,6 @@ function FunctionalTest() {
   useEffect(() => {
     (async () => {
       try{
-        //   setloading(prev=>({...prev,head:true}));
-        // // await new Promise((resolve, reject) =>
-        // // {
-        // //     setTimeout(() => resolve(), 10000)
-        // // })
-        // let res = await fetch(`${API_URL}/api/Heading?Id=1`);
-        // let res2=null;
-        // if (res.status === 200) {
-        //  // console.log(res);
-        //   res2 = await res.json();
-        //   //alert(res2.length);
-        //   // headings.length=0;
-        //   //res2.forEach(el=>headings.push(el));
-        //   setHeadings(prev => [...res2]);
-        //   // alert(headings.length);
-        //   setHid(prev=>res2[0].id);
-        //   setDesc(prev=>{let s=[...prev];s[0]=res2[0].description;return s;})
-        //   setRemark(prev=>{let s=[...prev];s[0]=res2[0].remark;return s;})
-        //   setloading(prev=>({...prev,head:false}));
-        //   //alert(headings[0].id)
-        // } else {
-        //   //setloading(prev=>({...prev,head:false}));
-        //   setloading(prev=>({head:false,subhead:false,upsheets:false,upimgs:false}));
-        //   return;
-        // }
         let res=await loadHeadings();
         if(res)
         {
@@ -391,7 +368,7 @@ function FunctionalTest() {
           state: true,
         }));
         setSnack(true);
-        setPresentImages(prev=>{let s=[...prev];s.push({id:res,Name:name});return s;})
+        setPresentImages(prev=>{let s=[...prev];s.push({id:res,name:name});return s;})
       }
     }
     }
@@ -467,7 +444,7 @@ function FunctionalTest() {
           setid={setHid}
         />}
         {loading.subhead?<HSubSkeleton/>:<MultiSelectComponent
-          loadNext={()=>{fetchImageSheets("SubHeadingImages")}}
+          loadNext={(id)=>{fetchImageSheets("SubHeadingImages",id)}}
           data={subheadings.map(el=>({label:el.name,value:el.id}))}
           edit={edit}
           selected={shid}
@@ -676,15 +653,17 @@ function FunctionalTest() {
 
 export default FunctionalTest;
 
-export const ListEl = ({ isEo = true,type, title, edit, Display,setstate,setErr,setSnack }) => {
+export const ListEl = ({ isEo = false,type, title, edit, Display,setstate,setErr,setSnack }) => {
   const Delete=async (id)=>{
     try{
+      
       setErr((prev) => ({
         ...prev,
         data: "Deleting details...",
         state: true,
       }));
       setSnack(true);
+  
       const res=await UploadType(`${API_URL}/api/${type=="img"?"SubHeadingImages":""}?Id=${id}`,"DELETE");
       if(res){
         setErr((prev) => ({
@@ -726,7 +705,7 @@ export const ListEl = ({ isEo = true,type, title, edit, Display,setstate,setErr,
                 padding: 5,
                 paddingLeft: 25,
                 fontWeight: "bold",
-                width: isEo ? 125 : 125,
+                width: isEo ? 220 : 125,
               }}
             >
               {title.name}

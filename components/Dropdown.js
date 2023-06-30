@@ -39,7 +39,7 @@ const MultiSelectComponent = ({ loadNext,data,edit=false,singleselect = true, se
                 value={selected}
                 onChange={item =>
                 {
-                    alert(item.value);
+                   // alert(item.value);
                     setid(item.value);
                     loadNext(item.value);
                 }}
