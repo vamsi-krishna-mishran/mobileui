@@ -4,11 +4,13 @@ this is a mobile application using expo with native-base template.
 
 The official NativeBase template for [Expo](https://docs.expo.io/)
 
-<div>
-    <div><img src="Screenshot_1.jpg" alt="sample snippet" width="150"/></div>
-
-     <div>
-    <img src="Screenshot_2.jpg" alt="sample snippet" width="150"/></div>
+<div style="display:flex;flex-direction:row;gap:5px;margin-top:20px">
+  <div>
+    <img src="Screenshot_1.jpg" alt="sample snippet" width="150"/>
+  </div>
+  <div>
+    <img src="Screenshot_2.jpg" alt="sample snippet" width="150"/>
+  </div>
 </div>
 <div style="display:flex;flex-direction:row;gap:5px;margin-top:20px">
   <div>
